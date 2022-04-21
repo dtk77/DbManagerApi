@@ -1,7 +1,6 @@
-using DbManagerApi.ServiceExtensions;
+using DbManagerApi.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
-using System.Collections.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +10,9 @@ LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(),
 builder.Services.ConfigureCors();
 builder.Services.ConfigureIISIntegration();
 builder.Services.ConfigureLoggerService();
+builder.Services.ConfigureRepositoryManager();
+builder.Services.ConfigurationServiceManager();
+builder.Services.ConfigurationSqlContext(builder.Configuration);
 
 builder.Services.AddControllers();
 
