@@ -1,8 +1,11 @@
+using Contracts;
 using DbManagerApi.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
 using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 
 LogManager.LoadConfiguration(string.Concat(Directory.GetCurrentDirectory(),
     "/nlog.config"));
@@ -13,15 +16,24 @@ builder.Services.ConfigureLoggerService();
 builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigurationServiceManager();
 builder.Services.ConfigurationSqlContext(builder.Configuration);
+builder.Services.AddAutoMapper(typeof(Program));
 
-builder.Services.AddControllers();
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.ApiBehaviorOptions>(options =>
+   {
+       options.SuppressModelStateInvalidFilter = true;
+   });
+
+builder.Services.AddControllers()
+    .AddApplicationPart(typeof(
+        DbManagerApi.Presentation.AssemblyReference).Assembly);
 
 
 var app = builder.Build();
 
-if(app.Environment.IsDevelopment())
-    app.UseDeveloperExceptionPage();
-else 
+var logger = app.Services.GetRequiredService<ILoggerManager>();
+app.ConfigureExceptionHandler(logger);
+
+if(app.Environment.IsProduction())
     app.UseHsts();
 
 app.UseHttpsRedirection();
