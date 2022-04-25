@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Repository;
 
@@ -14,12 +15,10 @@ public class ProductRepository : RepositoryBase<Product>, IProductRepository
 
     public void DeleteProduct(Product product) => Delete(product);
 
-    public IEnumerable<Product> GetAllCompanies(bool trackChanges) =>
-        GetAll(trackChanges)
-        .OrderBy(c => c.Name)
-        .ToList();
+    public async Task<IEnumerable<Product>> GetAllCompaniesAsync(bool trackChanges) =>
+        await GetAll(trackChanges).OrderBy(c => c.Name).ToListAsync();
 
-    public Product? GetById(Guid productId, bool trackChanges) =>
+    public Task<Product> GetByIdAsync(Guid productId, bool trackChanges) =>
         GetByCondition(p => p.Id.Equals(productId), trackChanges)
-        .SingleOrDefault();
+        .SingleOrDefaultAsync();
 }

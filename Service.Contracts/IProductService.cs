@@ -4,10 +4,10 @@ namespace Service.Contracts;
 
 public interface IProductService
 {
-    IEnumerable<ProductDto> GetAllProducts(bool trackChanges);
-    ProductDto GetProduct(Guid id, bool trackChanges);
-    ProductDto CreateProduct(ProductForCreationgDto product);
-    void DeleteProduct(Guid id, bool trackChanges);
-    void UpdateProduct(Guid id, ProductForUpdateDto productForUpate, bool trackChanges);
+    Task<IEnumerable<ProductDto>> GetAllProductsAsync(bool trackChanges);
+    Task<ProductDto> GetProductAsync(Guid productId, bool trackChanges);
+    Task<ProductDto> CreateProductAsync(ProductForCreationgDto product);
+    Task DeleteProductAsync(Guid productId, bool trackChanges);
+    Task UpdateProductAsync(Guid productId, ProductForUpdateDto productForUpate, bool trackChanges);
 }
 

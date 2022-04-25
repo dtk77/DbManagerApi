@@ -20,41 +20,41 @@ internal sealed class ProductService : IProductService
         _mapper = mapper;
     }
 
-    public ProductDto CreateProduct(ProductForCreationgDto product)
+    public async Task<ProductDto> CreateProductAsync(ProductForCreationgDto product)
     {
         var productEntity = _mapper.Map<Product>(product);
 
         _repository.Product.CreateProduct(productEntity);
-        _repository.Save();
+        await _repository.SaveAsync();
 
         var productToReturn = _mapper.Map<ProductDto>(productEntity);
 
         return productToReturn; 
     }
 
-    public void DeleteProduct(Guid id, bool trackChanges)
+    public async Task DeleteProductAsync(Guid productId, bool trackChanges)
     {
-        var product = _repository.Product.GetById(id, trackChanges);
+        var product = await _repository.Product.GetByIdAsync(productId, trackChanges);
         if(product is null)
-            throw new ProductNotFoundException(id);
+            throw new ProductNotFoundException(productId);
 
         _repository.Product.DeleteProduct(product);
-        _repository.Save();
+        await _repository.SaveAsync();
     }
 
-    public IEnumerable<ProductDto> GetAllProducts(bool trackChanges)
+    public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(bool trackChanges)
     {
            //throw new Exception("Exception");
-            var companies = _repository.Product.GetAllCompanies(trackChanges);
+            var products = await _repository.Product.GetAllCompaniesAsync(trackChanges);
 
-            var productDto = _mapper.Map<IEnumerable<ProductDto>>(companies);
+            var productDto = _mapper.Map<IEnumerable<ProductDto>>(products);
 
             return productDto;
     }
 
-    public ProductDto GetProduct(Guid id, bool trackChanges)
+    public async Task<ProductDto> GetProductAsync(Guid id, bool trackChanges)
     {
-        var product = _repository.Product.GetById(id, trackChanges);
+        var product = await _repository.Product.GetByIdAsync(id, trackChanges);
         if (product == null)
             throw new ProductNotFoundException(id);
 
@@ -63,14 +63,14 @@ internal sealed class ProductService : IProductService
         return productDto;
     }
 
-    public void UpdateProduct(Guid id, ProductForUpdateDto productForUpate, bool trackChanges)
+    public async Task UpdateProductAsync(Guid id, ProductForUpdateDto productForUpate, bool trackChanges)
     {
-        var product = _repository.Product.GetById(id, trackChanges);
+        var productEntity = _repository.Product.GetByIdAsync(id, trackChanges);
 
-        if (product is null)
+        if (productEntity is null)
             throw new ProductNotFoundException(id);
 
-        _mapper.Map(productForUpate, product);
-        _repository.Save();
+        _mapper.Map(productForUpate, productEntity);
+       await _repository.SaveAsync();
     }
 }

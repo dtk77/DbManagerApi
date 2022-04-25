@@ -4,5 +4,5 @@ public interface IRepositoryManager
 {
     IProductRepository Product { get; }
 
-    void Save();
+    Task SaveAsync();
 }

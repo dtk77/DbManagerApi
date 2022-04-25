@@ -16,23 +16,23 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetProducts()
+    public async Task<IActionResult> GetProducts()
     {
-            var products = _serviceManager.ProductService.GetAllProducts(trackChanges: false);
+            var products = await _serviceManager.ProductService.GetAllProductsAsync(trackChanges: false);
 
             return Ok(products);
     }
 
     [HttpGet("{id:guid}", Name = "ProductById")]
-    public IActionResult GetProduct(Guid id)
+    public async Task<IActionResult> GetProduct(Guid id)
     {
-        var product = _serviceManager.ProductService.GetProduct(id, trackChanges: false);
+        var product = await _serviceManager.ProductService.GetProductAsync(id, trackChanges: false);
 
         return Ok(product);
     }
 
     [HttpPost]
-    public IActionResult CreateProduct([FromBody] ProductForCreationgDto product)
+    public async Task<IActionResult> CreateProduct([FromBody] ProductForCreationgDto product)
     {
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
@@ -40,21 +40,21 @@ public class ProductController : ControllerBase
         if (product is null)
             return BadRequest("ProductForCreationDto object is null");
 
-        var createdProduct = _serviceManager.ProductService.CreateProduct(product);
+        var createdProduct = await _serviceManager.ProductService.CreateProductAsync(product);
 
         return CreatedAtRoute("ProductById", new { id = createdProduct.id }, createdProduct);
     }
     
     [HttpDelete("{id:guid}")]
-    public IActionResult DeleteProduct(Guid id)
+    public async Task<IActionResult> DeleteProduct(Guid id)
     {
-        _serviceManager.ProductService.DeleteProduct(id, trackChanges: false);
+        await _serviceManager.ProductService.DeleteProductAsync(id, trackChanges: false);
 
         return NoContent();
     }
 
     [HttpPut("{id:guid}")]
-    public IActionResult UpdateProduct(Guid id, [FromBody] ProductForUpdateDto product)
+    public async Task<IActionResult> UpdateProduct(Guid id, [FromBody] ProductForUpdateDto product)
     {
         if (product is null)
             return BadRequest("ProductForUpdateDto object is null");
@@ -62,7 +62,7 @@ public class ProductController : ControllerBase
         if (!ModelState.IsValid)
             return UnprocessableEntity(ModelState);
 
-        _serviceManager.ProductService.UpdateProduct(id, product, trackChanges: true);
+        await _serviceManager.ProductService.UpdateProductAsync(id, product, trackChanges: true);
 
         return NoContent();
         
