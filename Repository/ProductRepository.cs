@@ -18,7 +18,7 @@ public class ProductRepository : RepositoryBase<Product>, IProductRepository
     public async Task<IEnumerable<Product>> GetAllCompaniesAsync(bool trackChanges) =>
         await GetAll(trackChanges).OrderBy(c => c.Name).ToListAsync();
 
-    public Task<Product> GetByIdAsync(Guid productId, bool trackChanges) =>
-        GetByCondition(p => p.Id.Equals(productId), trackChanges)
+    public async Task<Product?> GetByIdAsync(Guid productId, bool trackChanges) =>
+       await GetByCondition(p => p.Id.Equals(productId), trackChanges)
         .SingleOrDefaultAsync();
 }

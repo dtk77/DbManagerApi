@@ -32,17 +32,18 @@ public class ProductController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateProduct([FromBody] ProductForCreationgDto product)
+     public async Task<IActionResult> CreateProduct([FromBody] ProductForCreationgDto product)
     {
-        if (!ModelState.IsValid)
-            return UnprocessableEntity(ModelState);
-
         if (product is null)
             return BadRequest("ProductForCreationDto object is null");
 
+        if (!ModelState.IsValid)
+            return UnprocessableEntity(ModelState);
+
+
         var createdProduct = await _serviceManager.ProductService.CreateProductAsync(product);
 
-        return CreatedAtRoute("ProductById", new { id = createdProduct.id }, createdProduct);
+        return CreatedAtRoute("ProductById", new {createdProduct.id }, createdProduct);
     }
     
     [HttpDelete("{id:guid}")]
