@@ -32,11 +32,12 @@ internal sealed class ProductService : IProductService
         return productToReturn; 
     }
 
-    public async Task DeleteProductAsync(Guid productId, bool trackChanges)
+    public async Task DeleteProductAsync(Guid id, bool trackChanges)
     {
-        var product = await _repository.Product.GetByIdAsync(productId, trackChanges);
+        var product = await GetAndCheckProductExists(id, trackChanges);
+        /*var product = await _repository.Product.GetByIdAsync(productId, trackChanges);
         if(product is null)
-            throw new ProductNotFoundException(productId);
+            throw new ProductNotFoundException(productId);*/
 
         _repository.Product.DeleteProduct(product);
         await _repository.SaveAsync();
@@ -54,9 +55,11 @@ internal sealed class ProductService : IProductService
 
     public async Task<ProductDto> GetProductAsync(Guid id, bool trackChanges)
     {
-        var product = await _repository.Product.GetByIdAsync(id, trackChanges);
+        var product = await GetAndCheckProductExists(id, trackChanges);
+
+        /*var product = await _repository.Product.GetByIdAsync(id, trackChanges);
         if (product == null)
-            throw new ProductNotFoundException(id);
+            throw new ProductNotFoundException(id);*/
 
         var productDto = _mapper.Map<ProductDto>(product);
 
@@ -65,12 +68,26 @@ internal sealed class ProductService : IProductService
 
     public async Task UpdateProductAsync(Guid id, ProductForUpdateDto productForUpate, bool trackChanges)
     {
-        var productEntity = _repository.Product.GetByIdAsync(id, trackChanges);
+        var productEntity = await GetAndCheckProductExists(id, trackChanges);
 
+        /*var productEntity = await _repository.Product.GetByIdAsync(id, trackChanges);
         if (productEntity is null)
-            throw new ProductNotFoundException(id);
+            throw new ProductNotFoundException(id);*/
 
         _mapper.Map(productForUpate, productEntity);
        await _repository.SaveAsync();
     }
+
+
+
+    private async Task<Product> GetAndCheckProductExists(Guid id, bool trackChanges)
+    {
+        var productEntity = await _repository.Product.GetByIdAsync(id, trackChanges);
+        if (productEntity is null)
+            throw new ProductNotFoundException(id);
+
+        return productEntity;
+    }
+
+
 }
