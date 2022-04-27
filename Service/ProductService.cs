@@ -25,7 +25,7 @@ internal sealed class ProductService : IProductService
     public async Task<(IEnumerable<ProductDto> products, MetaData metaData)>  GetProductsAsync(ProductParameters parameters, bool trackChanges)
     {
         var productsWithMataData = await _repository.Product
-            .GetProductAsync(parameters, trackChanges);
+            .GetProductsAsync(parameters, trackChanges);
 
         var productsDto = _mapper.Map<IEnumerable<ProductDto>>(productsWithMataData);
 

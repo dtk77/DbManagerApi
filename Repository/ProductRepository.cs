@@ -14,7 +14,7 @@ public class ProductRepository : RepositoryBase<Product>, IProductRepository
     }
 
 
-    public async Task<PagedList<Product>> GetProductAsync(ProductParameters parameters, bool trackChanges)
+    public async Task<PagedList<Product>> GetProductsAsync(ProductParameters parameters, bool trackChanges)
     {
         var products = await GetAll(trackChanges)
             .FilterProduct(parameters.NameProduct)
