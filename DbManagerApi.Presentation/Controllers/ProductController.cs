@@ -8,6 +8,7 @@ namespace DbManagerApi.Presentation.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[ApiExplorerSettings(GroupName = "v1")]
 public class ProductController : ControllerBase
 {
     private readonly IServiceManager _serviceManager;
