@@ -1,0 +1,202 @@
+{
+	"info": {
+		"_postman_id": "a507b581-14c4-4367-a352-20b52091bc48",
+		"name": "DbManagerApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://localhost:7060/api/Product?pageSize=51&pageNumber=1&nameProduct=Product 10111111",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7060/api/Product?pageSize=51&pageNumber=1&nameProduct=Product 10111111",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7060",
+					"path": [
+						"api",
+						"Product"
+					],
+					"query": [
+						{
+							"key": "pageSize",
+							"value": "51"
+						},
+						{
+							"key": "pageNumber",
+							"value": "1"
+						},
+						{
+							"key": "nameProduct",
+							"value": "Product 10111111"
+						}
+					]
+				},
+				"description": "pageSize=\r\npageNumber=\r\nnameProduct=\r\n\r\nHeaders\r\nX-Pagination - metadata"
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:7060/api/Product",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n    \"Name\": \"Product 1\",\r\n    \"Description\": \"Description product 1\"\r\n}\r\n                ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7060/api/Product",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7060",
+					"path": [
+						"api",
+						"Product"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:7060/api/Product/3d11132e-6371-4e30-8a8d-3738eb99dbbf",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Product 1 changed\",\r\n    \"Description\": \"Description 1 changed \"\r\n}\r\n                ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7060/api/Product/3d11132e-6371-4e30-8a8d-3738eb99dbbf",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7060",
+					"path": [
+						"api",
+						"Product",
+						"3d11132e-6371-4e30-8a8d-3738eb99dbbf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:7060/api/Product/453c7f68-b6e5-4f88-6f5b-08da274cd731",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7060/api/Product/453c7f68-b6e5-4f88-6f5b-08da274cd731",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7060",
+					"path": [
+						"api",
+						"Product",
+						"453c7f68-b6e5-4f88-6f5b-08da274cd731"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:7060/api/Product/3d11132e-6371-4e30-8a8d-3738eb99dbbf",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "https://localhost:7060/api/Product/3d11132e-6371-4e30-8a8d-3738eb99dbbf",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7060",
+					"path": [
+						"api",
+						"Product",
+						"3d11132e-6371-4e30-8a8d-3738eb99dbbf"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "https://localhost:7060/api/Product/3d11132e-6371-4e30-8a8d-3738eb99dbbf",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://localhost:7060/api/Product/3d11132e-6371-4e30-8a8d-3738eb99dbbf",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7060",
+							"path": [
+								"api",
+								"Product",
+								"3d11132e-6371-4e30-8a8d-3738eb99dbbf"
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
+		}
+	]
+}
