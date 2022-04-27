@@ -4,6 +4,7 @@ using Service.Contracts;
 using Entities.Exceptions;
 using Shared.DataTransferObject;
 using Entities.Models;
+using Shared.RequestFeatures;
 
 namespace Service;
 
@@ -20,35 +21,17 @@ internal sealed class ProductService : IProductService
         _mapper = mapper;
     }
 
-    public async Task<ProductDto> CreateProductAsync(ProductForCreationgDto product)
+
+    public async Task<(IEnumerable<ProductDto> products, MetaData metaData)>  GetProductsAsync(ProductParameters parameters, bool trackChanges)
     {
-        var productEntity = _mapper.Map<Product>(product);
+        var productsWithMataData = await _repository.Product
+            .GetProductAsync(parameters, trackChanges);
 
-        _repository.Product.CreateProduct(productEntity);
-        await _repository.SaveAsync();
+        var productsDto = _mapper.Map<IEnumerable<ProductDto>>(productsWithMataData);
 
-        var productToReturn = _mapper.Map<ProductDto>(productEntity);
-
-        return productToReturn; 
+        return (products: productsDto, metaData: productsWithMataData.MetaData);
     }
 
-    public async Task DeleteProductAsync(Guid id, bool trackChanges)
-    {
-        var product = await GetAndCheckProductExists(id, trackChanges);
-        
-        _repository.Product.DeleteProduct(product);
-        await _repository.SaveAsync();
-    }
-
-    public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(bool trackChanges)
-    {
-           //throw new Exception("Exception");
-            var products = await _repository.Product.GetAllCompaniesAsync(trackChanges);
-
-            var productDto = _mapper.Map<IEnumerable<ProductDto>>(products);
-
-            return productDto;
-    }
 
     public async Task<ProductDto> GetProductAsync(Guid id, bool trackChanges)
     {
@@ -59,14 +42,36 @@ internal sealed class ProductService : IProductService
         return productDto;
     }
 
+
+    public async Task<ProductDto> CreateProductAsync(ProductForCreationgDto product)
+    {
+        var productEntity = _mapper.Map<Product>(product);
+
+        _repository.Product.CreateProduct(productEntity);
+        await _repository.SaveAsync();
+
+        var productToReturn = _mapper.Map<ProductDto>(productEntity);
+
+        return productToReturn;
+    }
+
+
+    public async Task DeleteProductAsync(Guid id, bool trackChanges)
+    {
+        var product = await GetAndCheckProductExists(id, trackChanges);
+
+        _repository.Product.DeleteProduct(product);
+        await _repository.SaveAsync();
+    }
+
+
     public async Task UpdateProductAsync(Guid id, ProductForUpdateDto productForUpate, bool trackChanges)
     {
         var productEntity = await GetAndCheckProductExists(id, trackChanges);
 
         _mapper.Map(productForUpate, productEntity);
-       await _repository.SaveAsync();
+        await _repository.SaveAsync();
     }
-
 
 
     private async Task<Product> GetAndCheckProductExists(Guid id, bool trackChanges)
@@ -77,6 +82,4 @@ internal sealed class ProductService : IProductService
 
         return productEntity;
     }
-
-
 }
