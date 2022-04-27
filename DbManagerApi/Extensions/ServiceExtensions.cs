@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using Repository;
 using Service;
 using Service.Contracts;
+using System.Reflection;
 
 namespace DbManagerApi.Extensions;
 
@@ -42,9 +43,15 @@ public static class ServiceExtensions
 
     public static void ConfigureSwagger(this IServiceCollection services)
     {
-        services.AddSwaggerGen(s =>
+        services.AddSwaggerGen(options =>
         {
-            s.SwaggerDoc("v1", new OpenApiInfo { Title = "DbManagerApi", Version = "v1" });
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "DbManagerApi", Version = "v1" });
+
+
+            var xmlFile = $"{typeof(Presentation.AssemblyReference).Assembly.GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            options.IncludeXmlComments(xmlPath);
+
         });
     }
 }
