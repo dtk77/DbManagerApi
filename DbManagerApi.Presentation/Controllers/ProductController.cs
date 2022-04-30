@@ -19,13 +19,12 @@ public class ProductController : ControllerBase
     /// <summary>
     /// Get products list with parametrs
     /// </summary>
-    /// <param name="parameters">PageNumber</param>
-    /// <param name="parameters">PageSize</param>
-    /// <param name="parameters">NameProduct</param>
+    /// <param name="parameters"></param>
     /// <returns>Products list and metadate for pagination</returns>
     [HttpGet]
     public async Task<IActionResult> GetProducts([FromQuery] ProductParameters parameters)
     {
+        
         var pagedResult = await _serviceManager.ProductService
             .GetProductsAsync(parameters, trackChanges: false);
 
@@ -33,6 +32,7 @@ public class ProductController : ControllerBase
 
         return Ok(pagedResult.products);
     }
+
 
     /// <summary>
     /// Get product by Id
@@ -111,5 +111,14 @@ public class ProductController : ControllerBase
         await _serviceManager.ProductService.DeleteProductAsync(id, trackChanges: false);
 
         return NoContent();
+    }
+
+
+    [HttpGet("namesProduct")]
+    public async Task<IActionResult> GetNamesProduct()
+    {
+       var result = await _serviceManager.ProductService.GetNamesProduct();
+
+        return Ok(result);
     }
 }

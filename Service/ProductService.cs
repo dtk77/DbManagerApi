@@ -22,14 +22,17 @@ internal sealed class ProductService : IProductService
     }
 
 
-    public async Task<(IEnumerable<ProductDto> products, MetaData metaData)>  GetProductsAsync(ProductParameters parameters, bool trackChanges)
+    public async Task<(IEnumerable<ProductDto> products, MetaData metaData)>
+                                            GetProductsAsync(ProductParameters parameters, bool trackChanges)
     {
+        var listAllNamesProduct = await _repository.Product.GetAllNamesProduct();
+        
         var productsWithMataData = await _repository.Product
             .GetProductsAsync(parameters, trackChanges);
 
         var productsDto = _mapper.Map<IEnumerable<ProductDto>>(productsWithMataData);
 
-        return (products: productsDto, metaData: productsWithMataData.MetaData);
+        return (products: productsDto, metaData: productsWithMataData.MetaData                );
     }
 
 
@@ -82,4 +85,6 @@ internal sealed class ProductService : IProductService
 
         return productEntity;
     }
+
+    public async Task<List<string>> GetNamesProduct() => await _repository.Product.GetAllNamesProduct();
 }

@@ -1,0 +1,72 @@
+﻿@model GroupViewModel
+
+@{
+    ViewData["Title"] = "Products";
+    var products = Model.products;
+    var listFilter = ViewBag.FilterList as List<SelectListItem>;
+}
+
+<h1>List products</h1>
+
+<h5 class="message" style="float:right">@TempData["Message"]</h5>
+
+<div id="PlaceHolderHere"></div>
+
+<button type="button" class="btn mb-4 btn-primary" data-toggle="ajax-modal"
+        data-target="#addProduct" data-url="@Url.Action("Create")">
+    Create
+</button>
+
+<form method="get" action="Products">
+    <select id="filter" name="nameProduct" data-toggle="filter" class="form-control"
+            asp-items="listFilter">
+        <option value="">-- select name -- </option>
+    </select>
+   @*<input type="submit" value="Go" />*@
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th> Id </th>
+            <th> Name product</th>
+            <th> Discription</th>
+            <th> </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.products)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem =>item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <button type="button" class="btn bt btn-primary" data-toggle="ajax-modal"
+                        data-target="#addProduct" data-url="@Url.Action("Update", new {id = item.Id})">
+                        Update
+                    </button>
+                    <button type="button" class="btn bt btn-danger" data-toggle="ajax-modal"
+                        data-target="#addProduct" data-url="@Url.Action("DeletePartail", new {id = item.Id, name = item.Name})">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.paginationInfo != null)
+{
+    <p>
+        @Model.paginationInfo.CurrentPage
+        <span> of </span>
+        @Model.paginationInfo.TotalPage
+    </p>
+}

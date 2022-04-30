@@ -9,4 +9,5 @@ public interface IProductRepository
     Task<Product?> GetByIdAsync(Guid productId, bool trackChanges);
     void CreateProduct(Product product);
     void DeleteProduct(Product product);
+    Task<List<string>> GetAllNamesProduct();
 }

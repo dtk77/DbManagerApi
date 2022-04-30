@@ -13,7 +13,6 @@ public class ProductRepository : RepositoryBase<Product>, IProductRepository
     {
     }
 
-
     public async Task<PagedList<Product>> GetProductsAsync(ProductParameters parameters, bool trackChanges)
     {
         var products = await GetAll(trackChanges)
@@ -30,13 +29,18 @@ public class ProductRepository : RepositoryBase<Product>, IProductRepository
         return PagedList<Product>.ToPagedList(products, count, parameters.PageNumber, parameters.PageSize);
     }
 
-
     public async Task<Product?> GetByIdAsync(Guid productId, bool trackChanges) =>
        await GetByCondition(p => p.Id.Equals(productId), trackChanges)
         .SingleOrDefaultAsync();
 
-
     public void CreateProduct(Product product) => Create(product);
 
     public void DeleteProduct(Product product) => Delete(product);
+
+    public async Task<List<string>> GetAllNamesProduct()
+    {
+       List<string>? namesProduct = await RepositoryContext.Products.Select(p => p.Name).Distinct().ToListAsync();
+
+        return namesProduct;
+    }
 }

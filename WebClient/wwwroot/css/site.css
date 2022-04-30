@@ -1,0 +1,32 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+
+.message{
+  opacity: 0;
+  animation-name: opMessage;
+  animation-duration: 2s;
+}
+
+@keyframes opMessage {
+    0%, 100% {
+        opacity: 100;
+        color:#808080;
+    }
+}

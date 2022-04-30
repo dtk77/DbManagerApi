@@ -10,7 +10,8 @@ public sealed class ServiceManager : IServiceManager
 
     public ServiceManager(IRepositoryManager repositoryManager, ILoggerManager logger, IMapper mapper)
     {
-        _productService = new Lazy<IProductService>(() => new ProductService(repositoryManager, logger, mapper));
+        _productService = new Lazy<IProductService>(() =>
+                    new ProductService(repositoryManager, logger, mapper));
     }
 
     public IProductService ProductService => _productService.Value;

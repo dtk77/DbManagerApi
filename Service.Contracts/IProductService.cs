@@ -10,5 +10,7 @@ public interface IProductService
     Task<ProductDto> CreateProductAsync(ProductForCreationgDto product);
     Task DeleteProductAsync(Guid productId, bool trackChanges);
     Task UpdateProductAsync(Guid productId, ProductForUpdateDto productForUpate, bool trackChanges);
+
+    Task<List<string>> GetNamesProduct();
 }
 
