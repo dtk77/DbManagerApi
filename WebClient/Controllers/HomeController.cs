@@ -9,7 +9,6 @@ public class HomeController : Controller
 {
     private readonly IProductService _service;
     private readonly ILogger<HomeController> _logger;
-
     public HomeController(IProductService service,
                             ILogger<HomeController> logger)
     {
@@ -26,7 +25,7 @@ public class HomeController : Controller
         var list = await _service.GetNamesProductAsync();
         ViewBag.FilterList = list;
 
-        GroupViewModel? model = await _service
+        GroupViewModel model = await _service
             .GetGroupModelProductsAsync(pageNumber, pageSize, nameProduct);
 
         if (model.products.Count == 0)

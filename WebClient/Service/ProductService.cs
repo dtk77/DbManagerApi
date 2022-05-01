@@ -1,33 +1,32 @@
-﻿using System.Text.Json;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Options;
 using System.Text;
+using System.Text.Json;
 using WebClient.Contract;
 using WebClient.Helpers;
 using WebClient.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using static WebClient.Helpers.HeaderParser;
 
 namespace WebClient.Services;
 
 public class ProductService : IProductService
 {
-    private readonly IHttpClientFactory _httpClientFactory;
     private readonly HttpClient _httpClient;
-    private string productsApiUrl = "api/product/";
+    private string productsApiUrl = string.Empty;
 
-
-    public ProductService(IHttpClientFactory httpClientFactory)
+    public ProductService(IHttpClientFactory httpClientFactory, IOptions<WebApiConfig> options)
     {
-        _httpClientFactory = httpClientFactory;
-        _httpClient = _httpClientFactory.CreateClient("ApiClient");
+        productsApiUrl = options.Value.ProductApiUrl;
+        _httpClient = httpClientFactory.CreateClient("ApiClient");
     }
 
     public async Task<GroupViewModel> GetGroupModelProductsAsync(
                         int? pageNumber, int? pageSize, string? nameProduct)
     {
         var model = new GroupViewModel();
-               
 
-        var queryString = $"api/product?pageNumber={pageNumber}&pageSize={pageSize}&nameProduct={nameProduct}";
+        var queryString =
+            $"api/product?pageNumber={pageNumber}&pageSize={pageSize}&nameProduct={nameProduct}";
         var response = await _httpClient.GetAsync(queryString).ConfigureAwait(false);
 
         response.EnsureSuccessStatusCode();
@@ -42,7 +41,6 @@ public class ProductService : IProductService
         return model;
     }
 
-
     public async Task<HttpResponseMessage> CreateAsync(Product product)
     {
         var stringData = JsonSerializer.Serialize(product);
@@ -54,8 +52,7 @@ public class ProductService : IProductService
 
     public async Task<HttpResponseMessage> DeleteAsync(Guid id) =>
          await _httpClient.DeleteAsync($"{productsApiUrl}{id}");
-       
-   
+
     public async Task<Product> GetProductAsync(Guid id)
     {
         HttpResponseMessage response = await _httpClient.GetAsync($"{productsApiUrl}{id}");
@@ -69,7 +66,6 @@ public class ProductService : IProductService
         return (product);
     }
 
-
     public async Task<HttpResponseMessage> UpdateAsync(Product product)
     {
         var stringData = JsonSerializer.Serialize(product);
@@ -81,7 +77,6 @@ public class ProductService : IProductService
         return response;
     }
 
-
     public async Task<List<SelectListItem>> GetNamesProductAsync()
     {
         HttpResponseMessage response = await _httpClient.GetAsync($"{productsApiUrl}namesProduct");
@@ -90,7 +85,8 @@ public class ProductService : IProductService
 
         List<string>? listNames = JsonSerializer.Deserialize<List<string>>(stringData, options);
 
-        List<SelectListItem> result = (listNames.Select( x => new SelectListItem() { Text = x, Value = x })).ToList();
+        List<SelectListItem> result = 
+            (listNames.Select(x => new SelectListItem() { Text = x, Value = x })).ToList();
 
         return result;
     }
