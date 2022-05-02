@@ -21,13 +21,12 @@ public class HomeController : Controller
     //No connection could be made because the target machine actively refused it.
 
     public async Task<IActionResult> Products(
-            int? pageNumber, int? pageSize, string? nameProduct)
+            int? pageNumber, int? pageSize, string nameProduct = "")
     {
         GroupViewModel model = await _service
          .GetGroupModelProductsAsync(pageNumber, pageSize, nameProduct);
 
         model.selectList = await _service.GetNamesProductAsync(nameProduct);
-        //_service.SetSelectedItemInList(model.selectList, nameProduct);
 
         if (model == null && model.products.Count == 0)
             TempData["Message"] = "List is empty";
@@ -63,7 +62,7 @@ public class HomeController : Controller
 
     public async Task<IActionResult> Update(Guid id)
     {
-        var product = await _service.GetProductAsync(id);
+        Product product = await _service.GetProductAsync(id);
 
         return PartialView("_ProductUpdatePartial", product);
     }

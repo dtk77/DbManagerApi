@@ -1,5 +1,6 @@
 ﻿using Contracts;
 using LoggerService;
+using Marvin.Cache.Headers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Repository;
@@ -18,7 +19,7 @@ public static class ServiceExtensions
                 builder.AllowAnyOrigin()
                 .AllowAnyMethod()
                 .AllowAnyHeader()
-                .WithExposedHeaders("X-Pagination"));;
+                .WithExposedHeaders("X-Pagination")); ;
         });
 
     public static void ConfigureIISIntegration(this IServiceCollection services) =>
@@ -53,5 +54,23 @@ public static class ServiceExtensions
             options.IncludeXmlComments(xmlPath);
 
         });
+
     }
+
+    public static void ConfigureResponseCaching(this IServiceCollection services) =>
+        services.AddResponseCaching();
+
+    public static void ConfigureHttpCacheHeaders(this IServiceCollection services) =>
+        services.AddHttpCacheHeaders(
+            (expirationOpt) =>
+            {
+                expirationOpt.MaxAge = 60;
+                expirationOpt.CacheLocation = CacheLocation.Private;
+            },
+            (validationOpt) =>
+            {
+                validationOpt.MustRevalidate = true;
+            }
+            );
+
 }

@@ -16,6 +16,9 @@ public class ProductService : IProductService
 
     public ProductService(IHttpClientFactory httpClientFactory, IOptions<WebApiConfig> options)
     {
+        if (options.Value.ProductApiUrl is null || options.Value.BaseUrl is null)
+            throw new Exception($"Url api not set in configuration file");
+
         productsApiUrl = options.Value.ProductApiUrl;
         _httpClient = httpClientFactory.CreateClient("ApiClient");
     }
@@ -53,10 +56,13 @@ public class ProductService : IProductService
     public async Task<HttpResponseMessage> DeleteAsync(Guid id) =>
          await _httpClient.DeleteAsync($"{productsApiUrl}{id}");
 
+
     public async Task<Product> GetProductAsync(Guid id)
     {
         HttpResponseMessage response = await _httpClient.GetAsync($"{productsApiUrl}{id}");
+
         string stringData = await response.Content.ReadAsStringAsync();
+
         var options = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true,
@@ -64,6 +70,7 @@ public class ProductService : IProductService
         Product product = JsonSerializer.Deserialize<Product>(stringData, options);
 
         return (product);
+
     }
 
     public async Task<HttpResponseMessage> UpdateAsync(Product product)
@@ -77,7 +84,7 @@ public class ProductService : IProductService
         return response;
     }
 
-    public async Task<List<SelectListItem>> GetNamesProductAsync(string? selectedNameProduct)
+    public async Task<List<SelectListItem>> GetNamesProductAsync(string selectedNameProduct)
     {
         HttpResponseMessage response = await _httpClient.GetAsync($"{productsApiUrl}namesProduct");
 
@@ -86,7 +93,7 @@ public class ProductService : IProductService
 
         List<string>? listNames = JsonSerializer.Deserialize<List<string>>(stringData, options);
 
-        List<SelectListItem> selectList = 
+        List<SelectListItem> selectList =
             (listNames.Select(x => new SelectListItem() { Text = x, Value = x })).ToList();
 
         SetSelectedItemInList(selectList, selectedNameProduct);

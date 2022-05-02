@@ -17,6 +17,8 @@ builder.Services.ConfigureRepositoryManager();
 builder.Services.ConfigurationServiceManager();
 builder.Services.ConfigurationSqlContext(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.ConfigureResponseCaching();
+builder.Services.ConfigureHttpCacheHeaders();
 builder.Services.ConfigureSwagger();
 
 builder.Services.Configure<Microsoft.AspNetCore.Mvc.ApiBehaviorOptions>(options =>
@@ -53,6 +55,8 @@ app.UseForwardedHeaders(new ForwardedHeadersOptions
 });
 
 app.UseCors();
+app.UseResponseCaching();
+app.UseHttpCacheHeaders();
 
 app.UseAuthorization();
 

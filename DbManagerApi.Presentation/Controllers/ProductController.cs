@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Marvin.Cache.Headers;
+using Microsoft.AspNetCore.Mvc;
 using Service.Contracts;
 using Shared.DataTransferObject;
 using Shared.RequestFeatures;
@@ -8,6 +9,7 @@ namespace DbManagerApi.Presentation.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[ResponseCache(Duration = 60)]
 [ApiExplorerSettings(GroupName = "v1")]
 public class ProductController : ControllerBase
 {
@@ -112,8 +114,7 @@ public class ProductController : ControllerBase
 
         return NoContent();
     }
-
-
+    [ResponseCache(Duration = 60)]
     [HttpGet("namesProduct")]
     public async Task<IActionResult> GetNamesProduct()
     {
