@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
 using WebClient.Contract;
 using WebClient.Models;
@@ -18,23 +19,21 @@ public class HomeController : Controller
 
     //TODO exception:
     //No connection could be made because the target machine actively refused it.
-    
+
     public async Task<IActionResult> Products(
             int? pageNumber, int? pageSize, string? nameProduct)
     {
-        var list = await _service.GetNamesProductAsync();
-        ViewBag.FilterList = list;
-
         GroupViewModel model = await _service
-            .GetGroupModelProductsAsync(pageNumber, pageSize, nameProduct);
+         .GetGroupModelProductsAsync(pageNumber, pageSize, nameProduct);
 
-        if (model.products.Count == 0)
+        model.selectList = await _service.GetNamesProductAsync(nameProduct);
+        //_service.SetSelectedItemInList(model.selectList, nameProduct);
+
+        if (model == null && model.products.Count == 0)
             TempData["Message"] = "List is empty";
 
         return View(model);
     }
-
-
     [HttpGet]
     public ActionResult Create()
     {
@@ -54,14 +53,14 @@ public class HomeController : Controller
             }
             else
             {
-                
+
                 TempData["Message"] = $"Error while calling Web-API! {response.StatusCode}";
             }
         }
         return RedirectToAction("Products");
     }
 
-    
+
     public async Task<IActionResult> Update(Guid id)
     {
         var product = await _service.GetProductAsync(id);
@@ -127,4 +126,7 @@ public class HomeController : Controller
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
+
+    
+
 }

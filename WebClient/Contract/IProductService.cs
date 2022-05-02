@@ -11,5 +11,5 @@ public interface IProductService
     Task<HttpResponseMessage> DeleteAsync(Guid id);
     Task<HttpResponseMessage> UpdateAsync(Product product);
     Task<Product> GetProductAsync(Guid id);
-    Task<List<SelectListItem>> GetNamesProductAsync();
+    Task<List<SelectListItem>> GetNamesProductAsync(string nameProduct);
 }

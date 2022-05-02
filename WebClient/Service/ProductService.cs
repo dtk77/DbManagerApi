@@ -77,17 +77,27 @@ public class ProductService : IProductService
         return response;
     }
 
-    public async Task<List<SelectListItem>> GetNamesProductAsync()
+    public async Task<List<SelectListItem>> GetNamesProductAsync(string? selectedNameProduct)
     {
         HttpResponseMessage response = await _httpClient.GetAsync($"{productsApiUrl}namesProduct");
+
         var stringData = await response.Content.ReadAsStringAsync();
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         List<string>? listNames = JsonSerializer.Deserialize<List<string>>(stringData, options);
 
-        List<SelectListItem> result = 
+        List<SelectListItem> selectList = 
             (listNames.Select(x => new SelectListItem() { Text = x, Value = x })).ToList();
 
-        return result;
+        SetSelectedItemInList(selectList, selectedNameProduct);
+
+        return selectList;
+    }
+
+    private static void SetSelectedItemInList(List<SelectListItem> selectList, string? selectedNameProduct)
+    {
+        var selectedItem = selectList.Find(x => x.Value == selectedNameProduct);
+        if (selectedItem != null)
+            selectedItem.Selected = true;
     }
 }

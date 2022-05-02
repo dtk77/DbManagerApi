@@ -3,7 +3,9 @@
 @{
     ViewData["Title"] = "Products";
     var products = Model.products;
-    var listFilter = ViewBag.FilterList as List<SelectListItem>;
+    var listFilter = Model.selectList;
+    //listFilter.Find(x => x.Value == HttpRequest.)
+    //var listFilter = ViewBag.FilterList as List<SelectListItem>;
 }
 
 <h1>List products</h1>
