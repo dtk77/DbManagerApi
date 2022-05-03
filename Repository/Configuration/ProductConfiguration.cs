@@ -8,7 +8,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 {
     public void Configure(EntityTypeBuilder<Product> builder)
     {
-        builder.HasData
+       /* builder.HasData
          (
             new Product
             {
@@ -28,6 +28,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
                  Name = "Product 3",
                  Description = "Description product 3"
              }
-        );
+        );*/
     }
 }

@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebClient", "WebClient\WebClient.csproj", "{EA96EA9C-0AEF-4089-8036-F2CFD5E5C57A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebClient2", "WebClient2\WebClient2.csproj", "{D9BDFF47-C4B0-4BBE-A4B3-960BCC769E1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{EA96EA9C-0AEF-4089-8036-F2CFD5E5C57A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA96EA9C-0AEF-4089-8036-F2CFD5E5C57A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA96EA9C-0AEF-4089-8036-F2CFD5E5C57A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9BDFF47-C4B0-4BBE-A4B3-960BCC769E1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9BDFF47-C4B0-4BBE-A4B3-960BCC769E1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9BDFF47-C4B0-4BBE-A4B3-960BCC769E1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9BDFF47-C4B0-4BBE-A4B3-960BCC769E1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

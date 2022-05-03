@@ -11,7 +11,7 @@ namespace WebClient.Services;
 
 public class ProductService : IProductService
 {
-    private readonly HttpClient _httpClient;
+    private readonly IHttpClientFactory _httpClientFactory;
     private string productsApiUrl = string.Empty;
 
     public ProductService(IHttpClientFactory httpClientFactory, IOptions<WebApiConfig> options)
@@ -20,12 +20,14 @@ public class ProductService : IProductService
             throw new Exception($"Url api not set in configuration file");
 
         productsApiUrl = options.Value.ProductApiUrl;
-        _httpClient = httpClientFactory.CreateClient("ApiClient");
+        _httpClientFactory = httpClientFactory;
     }
 
     public async Task<GroupViewModel> GetGroupModelProductsAsync(
                         int? pageNumber, int? pageSize, string? nameProduct)
     {
+        var _httpClient = _httpClientFactory.CreateClient("ApiClient");
+
         var model = new GroupViewModel();
 
         var queryString =
@@ -46,19 +48,29 @@ public class ProductService : IProductService
 
     public async Task<HttpResponseMessage> CreateAsync(Product product)
     {
+        var _httpClient = _httpClientFactory.CreateClient("ApiClient");
+
         var stringData = JsonSerializer.Serialize(product);
+
         var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
         HttpResponseMessage response = await _httpClient.PostAsync(productsApiUrl, contentData);
 
         return response;
     }
 
-    public async Task<HttpResponseMessage> DeleteAsync(Guid id) =>
-         await _httpClient.DeleteAsync($"{productsApiUrl}{id}");
+    public async Task<HttpResponseMessage> DeleteAsync(Guid id)
+    {
+        var _httpClient = _httpClientFactory.CreateClient("ApiClient");
 
+        var response = await _httpClient.DeleteAsync($"{productsApiUrl}{id}");
+
+        return response;
+    }
 
     public async Task<Product> GetProductAsync(Guid id)
     {
+        var _httpClient = _httpClientFactory.CreateClient("ApiClient");
+
         HttpResponseMessage response = await _httpClient.GetAsync($"{productsApiUrl}{id}");
 
         string stringData = await response.Content.ReadAsStringAsync();
@@ -75,7 +87,10 @@ public class ProductService : IProductService
 
     public async Task<HttpResponseMessage> UpdateAsync(Product product)
     {
+        var _httpClient = _httpClientFactory.CreateClient("ApiClient");
+
         var stringData = JsonSerializer.Serialize(product);
+
         var contentData = new StringContent(stringData, Encoding.UTF8, "application/json");
 
         HttpResponseMessage response = await _httpClient.PutAsync(
@@ -86,9 +101,12 @@ public class ProductService : IProductService
 
     public async Task<List<SelectListItem>> GetNamesProductAsync(string selectedNameProduct)
     {
+        var _httpClient = _httpClientFactory.CreateClient("ApiClient");
+
         HttpResponseMessage response = await _httpClient.GetAsync($"{productsApiUrl}namesProduct");
 
         var stringData = await response.Content.ReadAsStringAsync();
+
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         List<string>? listNames = JsonSerializer.Deserialize<List<string>>(stringData, options);
